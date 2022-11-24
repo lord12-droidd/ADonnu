@@ -1,0 +1,32 @@
+.page-wrapper {
+    display: flex;
+}
+
+.mb-4.ng-untouched.ng-pristine.ng-valid {
+    width: 50%;
+}
+
+.mb-4.ng-pristine.ng-valid.ng-touched {
+    width: 50%;
+}
+
+.mb-4.ng-valid.ng-dirty.ng-touched {
+    width: 50%;
+}
+
+.form-control.ng-valid.ng-dirty.ng-touched {
+    width: 50%;
+}
+
+.col-md-6 {
+    max-width: 90%;
+}
+
+.sketch-wrapper {
+    width: 50%;
+}
+
+#sketch-holder {
+    border: black;
+    border-style: solid;
+}

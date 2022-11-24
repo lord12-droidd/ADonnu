@@ -1,0 +1,21 @@
+.conteiner {
+    display: flex;
+    flex-direction: row;
+}
+
+img {
+    width: 50%;
+}
+
+.description {
+    font-size: x-large;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text-conteiner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
