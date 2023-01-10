@@ -1,0 +1,61 @@
+.page_wrapper {
+    display: flex;
+    max-width: 50%;
+}
+
+.page_wrapper form {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.faculty_icon {
+    align-self: flex-end;
+    width: 50%;
+    margin-top: 9%;
+    padding-left: 5%;
+}
+
+.col-md-6 {
+    max-width: 90%;
+    min-width: 90%;
+    margin-top: 10%;
+    max-height: 30%;
+    min-height: 30%;
+}
+
+.col-md-6 form {
+    width: 100%;
+}
+
+.form-group.col-md-8.offset-md-2 {
+    margin-left: 25%;
+}
+
+.form-row {
+    justify-content: center;
+}
+
+.description {
+    font-size: x-large;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text-conteiner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-bottom: 5%;
+}
+
+.info_wrapper {
+    margin-left: 15%;
+    max-width: 50%;
+}

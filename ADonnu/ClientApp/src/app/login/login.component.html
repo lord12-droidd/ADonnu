@@ -1,0 +1,30 @@
+<div class="page_wrapper">
+    <form #form='ngForm' class="mb-4" autocomplete="off" (submit)="onSubmit(form)">
+        <div class="text-conteiner">
+            <h1>Вхід</h1>
+            <div class="description">
+                Увійдіть щоб користуватись послугами ADonnu
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Email</label>
+                <input class="form-control" #Email="ngModel" name="Email" [(ngModel)]="formModel.Email" required>
+            </div>
+            <div class="form-group">
+                <label>Пароль</label>
+                <input type="password" class="form-control" #Password="ngModel" name="Password" [(ngModel)]="formModel.Password" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-8 offset-md-2">
+                <button type="submit" class="btn btn-lg btn-dark" [disabled]="form.invalid">Увійти</button>
+            </div>
+        </div>
+    </form>
+    <div class="info_wrapper">
+        <div class="faculty_icon">
+            <img src="assets/imgs/logofipt2020-1.png" width="555" height="555">
+        </div>
+    </div>
+</div>
