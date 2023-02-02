@@ -40,7 +40,7 @@ namespace DAL
         }
 
         public DbSet<StudentEntity> Students { get; set; }
-        //public DbSet<TeacherEntity> Teachers { get; set; }
+        public DbSet<TeacherEntity> Teachers { get; set; }
         //public DbSet<SubjectEntity> Subjects { get; set; }
         public DbSet<UserEntity> ApplicationUsers { get; set; }
     }

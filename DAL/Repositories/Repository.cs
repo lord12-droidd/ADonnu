@@ -23,7 +23,7 @@ namespace DAL.Repositories
             Entity = _context.Set<T>();
         }
 
-        public IQueryable<T> FindAll()
+        public virtual IQueryable<T> FindAll()
         {
             return Entity.AsQueryable();
         }

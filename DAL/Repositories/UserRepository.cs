@@ -47,5 +47,12 @@ namespace DAL.Repositories
             var result = await _userManager.CheckPasswordAsync(entity, password);
             return result;
         }
+
+        public override IQueryable<UserEntity> FindAll()
+        {
+            return Entity.AsQueryable()
+                .Include(user => user.TeacherProfile)
+                .Include(user => user.StudentProfile);
+        }
     }
 }

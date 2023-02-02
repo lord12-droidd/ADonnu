@@ -67,10 +67,11 @@ namespace ADonnu
 
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<IIndScheduleRequestService, IndScheduleRequestService>();
+            services.AddTransient<IAdminService, AdminService>();
 
             services.AddControllers();
 
-            services.AddDbContext<AppDBContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DbConnection")));
+            services.AddDbContext<AppDBContext>(opt => opt.UseNpgsql(Configuration.GetConnectionString("DbConnection")));
 
             services.AddIdentity<UserEntity, IdentityRole>()
                 .AddRoles<IdentityRole>()

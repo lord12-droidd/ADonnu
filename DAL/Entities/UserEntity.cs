@@ -8,5 +8,6 @@ namespace DAL.Entities
     public class UserEntity : IdentityUser
     {
         public virtual StudentEntity StudentProfile { get; set; }
+        public virtual TeacherEntity TeacherProfile { get; set; }
     }
 }
