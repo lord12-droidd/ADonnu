@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -28,13 +29,13 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task<AuthenticationResponseDTO> CreateToken(UserDTO user, string role)
+        public async Task<AuthenticationResponseDTO> CreateToken(UserDTO user, IList<string> roles)
         {
             var userEntity = await _unitOfWork.UserRepository.GetUserByEmailAsync(user.Email);
             var expiration = DateTime.UtcNow.AddMinutes(EXPIRATION_MINUTES);
 
             var token = CreateJwtToken(
-                CreateClaims(userEntity, role),
+                CreateClaims(userEntity, roles),
                 CreateSigningCredentials(),
                 expiration
             );
@@ -59,13 +60,13 @@ namespace BLL.Services
                 );
         }
 
-        private Claim[] CreateClaims(UserEntity user, string role) =>
+        private Claim[] CreateClaims(UserEntity user, IList<string> roles) =>
             new[] {
                 new Claim(JwtRegisteredClaimNames.Sub, _configuration["Jwt:Subject"]),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Iat, DateTime.UtcNow.ToString()),
                 new Claim("email", user.Email),
-                new Claim("role", role)
+                new Claim("roles", string.Join(",", roles))
             };
 
         private SigningCredentials CreateSigningCredentials()

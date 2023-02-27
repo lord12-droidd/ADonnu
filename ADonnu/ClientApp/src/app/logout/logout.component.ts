@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
-import { RegistrationService } from "../services/registration.service";
+import { UserService } from "../services/registration.service";
 
 @Component({
     template: ''
@@ -8,7 +8,7 @@ import { RegistrationService } from "../services/registration.service";
   
   export class LogoutComponent implements OnInit {
   
-    constructor(private service: RegistrationService, private router: Router) {}
+    constructor(private service: UserService, private router: Router) {}
   
     ngOnInit() {
         if (localStorage.getItem('token') != null){

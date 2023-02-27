@@ -1,7 +1,7 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { RegistrationService } from '../services/registration.service';
+import { UserService } from '../services/registration.service';
 
 @Component({
   selector: 'app-nav-menu',
@@ -9,16 +9,12 @@ import { RegistrationService } from '../services/registration.service';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent implements OnInit {
-  displayStudent = false;
-  displayTeacher = false;
-  displaySecretary = false;
-  currentrole: any;
-  someSubscription: any;
-  displayGuest = true;
+  allRoles = ['Admin', 'Teacher', 'Student']
+  currentUserRoles: [];
   displaymenu: boolean;
-  constructor( private route: Router, private service: RegistrationService) { }
-
   isExpanded = false;
+
+  constructor( private route: Router, private service: UserService) { }
 
   collapse() {
     this.isExpanded = false;
@@ -29,6 +25,7 @@ export class NavMenuComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentUserRoles = [];
     this.service.updatemenu.subscribe(res => {
       this.MenuDisplay();
     });
@@ -45,31 +42,9 @@ export class NavMenuComponent implements OnInit {
   MenuDisplay() {
     var token = localStorage.getItem('token');
     if (token === null){
-      this.displayGuest = true;
-      this.displayStudent = false;
-      this.displayTeacher = false;
-      this.displaySecretary = false;
-      return
+      this.currentUserRoles = [];
+      return;
     }
-    var payLoad = JSON.parse(window.atob(token.split('.')[1]));
-    this.currentrole = payLoad.role;
-    if (this.currentrole === "Student"){
-      this.displayGuest = false;
-      this.displayStudent = true;
-      this.displayTeacher = false;
-      this.displaySecretary = false;
-    }
-    else if (this.currentrole === "Teacher"){
-      this.displayGuest = false;
-      this.displayStudent = false;
-      this.displayTeacher = true;
-      this.displaySecretary = false;
-    }
-    else if (this.currentrole === "Secretary"){
-      this.displayGuest = false;
-      this.displayStudent = false;
-      this.displayTeacher = false;
-      this.displaySecretary = true;
-    }
+    this.currentUserRoles = JSON.parse(window.atob(token.split('.')[1])).roles.split(',')
   }
 }

@@ -1,0 +1,22 @@
+<h2>Користувачі</h2>
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="users">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Ролі</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let user of users; let i = index">
+          <td>{{user.email}}</td>
+          <ng-container *ngIf="user.roles[0]; else noRolesBlock">
+            <td>{{user.roles}}</td>
+          </ng-container>
+        <ng-template #noRolesBlock><td>Відсутні</td></ng-template>
+        <td><button class="btn btn-outline-danger" (click)="deleteUser(user.email)">Видалити</button></td>
+        <td><button class="btn btn-outline-warning" (click)="editUser(user)">Редагувати</button></td>
+      </tr>
+  </tbody>
+</table>

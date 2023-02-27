@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using ADonnu.Models;
+using AutoMapper;
+using BLL.DTO;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -25,6 +27,22 @@ namespace ADonnu.Controllers
         {
             var users = await _adminService.GetAllUsers();
             return Ok(users);
+        }
+
+        // DELETE: api/Admins/Delete/User
+        [HttpDelete("Delete/User")]
+        public async Task<ActionResult<object>> DeleteUser([FromQuery] string email)
+        {
+            var result = await _adminService.DeleteUserByEmailAsync(email);
+            return Ok(new { userEmail = email, isDeleted = result });
+        }
+
+        // DELETE: api/Admins/Update/User
+        [HttpPut("Update/User")]
+        public async Task<ActionResult<object>> UpdateUser([FromQuery] string email, UpdateStudentUserModel updateStudentModel)
+        {
+            var result = await _adminService.UpdateUserByEmailAsync(email, _mapper.Map<UpdateStudentUserDTO>(updateStudentModel));
+            return Ok(result);
         }
     }
 }

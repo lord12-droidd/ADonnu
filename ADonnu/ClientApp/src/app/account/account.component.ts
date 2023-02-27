@@ -26,10 +26,10 @@ export class AccountComponent implements OnInit {
     constructor(private studentService : StudentService, private toastr: ToastrService, private fb: FormBuilder,) { }
 
     ngOnInit() {
-        this.getUser();
+      this.getUser();
     }
 
-    public outputStudentInfo(userDetails){
+    private outputStudentInfo(userDetails){
         this.formModel.Email = userDetails.email;
         this.formModel.Name = userDetails.name;
         this.formModel.Surname = userDetails.surname;
@@ -43,8 +43,29 @@ export class AccountComponent implements OnInit {
     }
 
 
-    public getUser() {
-        this.studentService.getStudent().subscribe(
+    private getUser() {
+      let userRoles = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1])).roles.split(',');
+      if (userRoles.includes('Student')){
+        this.getStudent();
+        return;
+      }
+      this.getTeacher();
+
+    }
+
+    private onSubmitUpdate(form: NgForm) {
+      this.studentService.updateStudent(form.value).subscribe(
+        (res: any) => {
+          this.toastr.success("Оновлено");
+        },
+        err => {
+          this.toastr.error("Не вдалось оновити користувача");
+        }
+      );
+    }
+
+    private getStudent(){
+      this.studentService.getStudent().subscribe(
         res => {
             this.userDetails = res;
             this.outputStudentInfo(this.userDetails)
@@ -53,18 +74,11 @@ export class AccountComponent implements OnInit {
         err => {
             console.log(err);
         },
-        );
+      );
     }
 
-    onSubmitUpdate(form: NgForm) {
-        this.studentService.updateStudent(form.value).subscribe(
-          (res: any) => {
-            this.toastr.success("Оновлено");
-          },
-          err => {
-            this.toastr.error("Не вдалось оновити користувача");
-          }
-        );
-      }
+    private getTeacher(){
+
+    }
 
 }

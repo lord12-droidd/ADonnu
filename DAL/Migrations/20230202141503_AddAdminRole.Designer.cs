@@ -3,15 +3,17 @@ using System;
 using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230202141503_AddAdminRole")]
+    partial class AddAdminRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,34 +58,6 @@ namespace DAL.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("DAL.Entities.StudentSubjectEntity", b =>
-                {
-                    b.Property<string>("StudentId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SubjectId")
-                        .HasColumnType("text");
-
-                    b.HasKey("StudentId", "SubjectId");
-
-                    b.HasIndex("SubjectId");
-
-                    b.ToTable("StudentSubjects");
-                });
-
-            modelBuilder.Entity("DAL.Entities.SubjectEntity", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Subjects");
-                });
-
             modelBuilder.Entity("DAL.Entities.TeacherEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -125,29 +99,29 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "57992d96-ea5a-4bd9-9456-031f7f9405d7",
-                            ConcurrencyStamp = "4768080f-f92a-4361-8c5c-f2a23bb15cae",
+                            Id = "64c5071a-03f6-47fd-b018-b926e75dd18d",
+                            ConcurrencyStamp = "121a8ac3-9004-45c6-a531-9db3755d56c3",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         },
                         new
                         {
-                            Id = "0556c8a9-6f83-4186-a302-df065a70c2ff",
-                            ConcurrencyStamp = "7986c21e-449c-4c5a-9957-05bbd582ca7e",
+                            Id = "38ee0cc1-8adb-49c8-a88d-3bca657fa15c",
+                            ConcurrencyStamp = "73722c1a-80ab-4231-b07c-06d530195955",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "5b7058b3-762d-43cb-8c92-c00349f4941c",
-                            ConcurrencyStamp = "d92b3ce4-d2c7-4de5-b17b-5c508453ad54",
+                            Id = "935334ff-28d3-40a5-a1f3-3468608e08c6",
+                            ConcurrencyStamp = "14c3e2bd-e6ce-48d6-b062-7931abeb337a",
                             Name = "Secretary",
                             NormalizedName = "SECRETARY"
                         },
                         new
                         {
-                            Id = "9498a785-05d6-4343-b57e-35e6101e1850",
-                            ConcurrencyStamp = "796071d7-f884-475c-af72-dcceb2d86aca",
+                            Id = "947a7934-4ca3-4b6d-84a3-f27b03daccf9",
+                            ConcurrencyStamp = "0e9bed90-3b5a-4f16-b2f1-f83ed853e98c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -345,25 +319,6 @@ namespace DAL.Migrations
                     b.Navigation("UserEntity");
                 });
 
-            modelBuilder.Entity("DAL.Entities.StudentSubjectEntity", b =>
-                {
-                    b.HasOne("DAL.Entities.StudentEntity", "Student")
-                        .WithMany("StudentSubjects")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DAL.Entities.SubjectEntity", "Subject")
-                        .WithMany("StudentSubjects")
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Student");
-
-                    b.Navigation("Subject");
-                });
-
             modelBuilder.Entity("DAL.Entities.TeacherEntity", b =>
                 {
                     b.HasOne("DAL.Entities.UserEntity", "UserEntity")
@@ -424,16 +379,6 @@ namespace DAL.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("DAL.Entities.StudentEntity", b =>
-                {
-                    b.Navigation("StudentSubjects");
-                });
-
-            modelBuilder.Entity("DAL.Entities.SubjectEntity", b =>
-                {
-                    b.Navigation("StudentSubjects");
                 });
 
             modelBuilder.Entity("DAL.Entities.UserEntity", b =>

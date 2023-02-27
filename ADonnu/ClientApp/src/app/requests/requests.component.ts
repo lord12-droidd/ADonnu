@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { RequestService } from '../services/request.service';
 import { StudentService } from '../services/student.service';
 import * as p5 from 'p5';
 
@@ -33,7 +32,7 @@ export class RequestsComponent implements OnInit {
     strokeColor: number;
     canvas: any;
 
-    constructor(private studentService : StudentService, private requestService : RequestService, private toastr: ToastrService, private fb: FormBuilder,) { }
+    constructor(private studentService : StudentService, private toastr: ToastrService, private fb: FormBuilder,) { }
 
     ngOnInit() {
       this.getUser();
@@ -111,7 +110,7 @@ export class RequestsComponent implements OnInit {
         var canvas = document.getElementById('defaultCanvas0') as HTMLCanvasElement;
         var src = canvas.toDataURL("image/png");
         form.value.Signature = src
-        this.requestService.createStudentRequest(form.value).subscribe(
+        this.studentService.createStudentRequest(form.value).subscribe(
           (res: any) => {
             console.log(form.value);
             console.log(res);

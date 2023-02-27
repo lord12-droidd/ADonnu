@@ -16,6 +16,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LogoutComponent } from './logout/logout.component';
 import { AccountComponent } from './account/account.component';
 import { RequestsComponent } from './requests/requests.component';
+import { AdminComponent } from './admin/admin.component';
+import { EditStudentComponent } from './editStudent/editStudent.component';
+import { DataService } from './services/data.service';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,9 @@ import { RequestsComponent } from './requests/requests.component';
     ForbiddenComponent,
     LogoutComponent,
     AccountComponent,
-    RequestsComponent
+    RequestsComponent,
+    AdminComponent,
+    EditStudentComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -43,10 +48,12 @@ import { RequestsComponent } from './requests/requests.component';
       { path: 'forbidden', component : ForbiddenComponent},
       { path: 'logout', component : LogoutComponent},
       { path: 'account', component : AccountComponent, canActivate:[AuthGuard], data :{permittedRoles:['Student']}},
-      { path: 'requests', component : RequestsComponent, canActivate:[AuthGuard], data :{permittedRoles:['Student']}}
+      { path: 'requests', component : RequestsComponent, canActivate:[AuthGuard], data :{permittedRoles:['Student']}},
+      { path: 'admin', component : AdminComponent, canActivate:[AuthGuard], data :{permittedRoles:['Admin']}},
+      { path: 'edit/student', component : EditStudentComponent}
     ])
   ],
-  providers: [],
+  providers: [DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

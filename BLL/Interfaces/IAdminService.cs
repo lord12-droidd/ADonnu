@@ -1,4 +1,5 @@
 ﻿using BLL.DTO;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,8 +11,8 @@ namespace BLL.Interfaces
     {
         Task<List<UserDTO>> GetAllUsers();
         Task<UserDTO> GetUserByEmailAsync(string email);
-        Task<UserDTO> DeleteUserByEmailAsync(string email);
-        Task<UserDTO> UpdateUserByEmailAsync(string email);
+        Task<bool> DeleteUserByEmailAsync(string email);
+        Task<UpdateStudentUserDTO> UpdateUserByEmailAsync(string email, UpdateStudentUserDTO updateUserStudentData);
         Task<UserDTO> CreateUserByEmailAsync(string email);
     }
 }

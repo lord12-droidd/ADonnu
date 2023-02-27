@@ -10,6 +10,8 @@ namespace BLL
         {
             CreateMap<UserEntity, UserDTO>().ReverseMap();
             CreateMap<StudentEntity, StudentDTO>().ReverseMap();
+            CreateMap<StudentEntity, UpdateStudentUserDTO>().ReverseMap();
+            CreateMap<UserEntity, UpdateStudentUserDTO>().ReverseMap();        
         }
     }
 }

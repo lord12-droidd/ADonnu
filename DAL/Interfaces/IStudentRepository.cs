@@ -8,7 +8,9 @@ namespace DAL.Interfaces
 {
     public interface IStudentRepository : IRepository<StudentEntity>
     {
-        Task<StudentEntity> GetUserByIdAsync(string id);
+        Task<StudentEntity> GetStudentByIdAsync(string id);
         Task<StudentEntity> UpdateStudentAsync(StudentEntity newStudentEntity);
+        Task<StudentEntity> DeleteStudentByIdAsync(string id);
+        Task<StudentEntity> AddStudentByIdAsync(string id);
     }
 }

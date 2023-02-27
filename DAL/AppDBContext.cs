@@ -15,6 +15,8 @@ namespace DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<StudentSubjectEntity>().HasKey(sc => new { sc.StudentId, sc.SubjectId });
+
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole
                     {
@@ -33,6 +35,12 @@ namespace DAL
                         Id = Guid.NewGuid().ToString(),
                         Name = "Secretary",
                         NormalizedName = "SECRETARY",
+                    },
+                new IdentityRole
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Name = "Admin",
+                        NormalizedName = "ADMIN",
                     }
                 );
 
@@ -41,7 +49,8 @@ namespace DAL
 
         public DbSet<StudentEntity> Students { get; set; }
         public DbSet<TeacherEntity> Teachers { get; set; }
-        //public DbSet<SubjectEntity> Subjects { get; set; }
+        public DbSet<SubjectEntity> Subjects { get; set; }
+        public DbSet<StudentSubjectEntity> StudentSubjects { get; set; }
         public DbSet<UserEntity> ApplicationUsers { get; set; }
     }
 }

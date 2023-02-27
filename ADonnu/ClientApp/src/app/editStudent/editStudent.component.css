@@ -1,0 +1,26 @@
+.form_wrapper{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.roles_wrapper .form-group{
+  display: flex;
+  flex-direction: column;
+}
+
+.roles_wrapper{
+  width: 25%
+}
+
+.roles_option{
+  display: flex;
+}
+
+.roles_option input{
+  width: 15%;
+}
+
+.roles_option p{
+  font-size: x-large;
+}

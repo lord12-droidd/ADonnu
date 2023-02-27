@@ -27,7 +27,7 @@ namespace BLL.Services
             {
                 return null;
             }
-            var studentEntity = await _unitOfWork.StudentRepository.GetUserByIdAsync(userEntity.Id);
+            var studentEntity = await _unitOfWork.StudentRepository.GetStudentByIdAsync(userEntity.Id);
             return _mapper.Map<StudentDTO>(studentEntity);
         }
 

@@ -11,27 +11,32 @@ export class AdminService {
   private baseApiUrl : string;
   private apiGetUsersUrl  : string;
   private apiDeleteUrl  : string;
-  private apiGetAllUserFiles  : string;
+  private apiUpdateStudentUrl  : string;
 
   constructor(private httpClient: HttpClient) {
     this.baseApiUrl = 'https://localhost:44379';
-    this.apiGetUsersUrl = this.baseApiUrl + '/Admin/AllUsers';
-    this.apiDeleteUrl = this.baseApiUrl + '/Admin/DeleteUser';
-    this.apiGetAllUserFiles = this.baseApiUrl + '/File/AllFiles';
+    this.apiGetUsersUrl = this.baseApiUrl + '/api/Admins/Users';
+    this.apiDeleteUrl = this.baseApiUrl + '/api/Admins/Delete/User';
+    this.apiUpdateStudentUrl = this.baseApiUrl + '/api/Admins/Update/User';
    }
 
-  public getUsers(): Observable<string[]> {
-    return this.httpClient.get<string[]>(this.apiGetUsersUrl);
+  public getUsers(): Observable<any[]> {
+    return this.httpClient.get<any[]>(this.apiGetUsersUrl);
   }
 
-  public getFiles(): Observable<string[]> {
-    return this.httpClient.get<string[]>(this.apiGetAllUserFiles);
+  public getStudentForAdminEdit(email : string): Observable<string[]> {
+    return this.httpClient.get<string[]>(this.baseApiUrl + '/api/Students/' + email);
   }
 
-  public deleteUser(userName: string): Observable<HttpEvent<Blob>> {
+  public updateStudentByAdmin(email: string, formData) {
+    return this.httpClient.put(this.baseApiUrl + '/api/Admins/Update/User?email=' + email, formData);
+  }
+
+
+  public deleteUser(email: string): Observable<HttpEvent<Blob>> {
     return this.httpClient.request(new HttpRequest(
       'DELETE',
-      `${this.apiDeleteUrl}?userName=${userName}`,
+      `${this.apiDeleteUrl}?email=${email}`,
       null,
       {
         reportProgress: true,

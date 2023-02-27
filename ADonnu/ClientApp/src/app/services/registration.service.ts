@@ -6,7 +6,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class RegistrationService {
+export class UserService {
 
   constructor(private fb: FormBuilder, private http: HttpClient) { }
   readonly BaseURI = "https://localhost:44379";
@@ -56,15 +56,15 @@ export class RegistrationService {
   }
 
   roleMatch(allowedRoles): boolean {
-    var isMatch = false;
     var payLoad = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
-    var userRole = payLoad.role;
-    allowedRoles.forEach(element => {
-      if (userRole == element) {
-        isMatch = true;
-        return false;
+    var userRoles = payLoad.roles.split(',');
+    for (let i = 0; i < userRoles.length; i++){
+      for (let j = 0; j < allowedRoles.length; j++){
+        if (userRoles[i] === allowedRoles[j]){
+          return true
+        }
       }
-    });
-    return isMatch;
+    }
+    return false;
   }
 }

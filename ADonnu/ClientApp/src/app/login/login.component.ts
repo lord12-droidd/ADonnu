@@ -3,7 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
-import { RegistrationService } from '../services/registration.service';
+import { UserService } from '../services/registration.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
     Email: '',
     Password: ''
   }
-  constructor(private service: RegistrationService, private router: Router, private toastr: ToastrService) { }
+  constructor(private service: UserService, private router: Router, private toastr: ToastrService) { }
   
   ngOnInit() {
     if (localStorage.getItem('token') != null)

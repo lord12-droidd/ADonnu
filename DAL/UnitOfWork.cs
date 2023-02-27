@@ -13,7 +13,6 @@ namespace DAL
         private readonly AppDBContext _context;
 
         public IUserRepository UserRepository { get; }
-
         public IStudentRepository StudentRepository { get; }
         public ISubjectRepository SubjectRepository { get; }
 

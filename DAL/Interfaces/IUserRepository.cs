@@ -13,6 +13,8 @@ namespace DAL.Interfaces
 
         Task<IList<string>> GetUserRolesByEmailAsync(string email);
         Task<bool> CheckUserPasswordAsync(UserEntity entity, string password);
+        Task<IdentityResult> DeleteUserByEmail(string email);
+        Task<IdentityResult> UpdateUserRolesAsync(string email, IList<string> roles);
 
     }
 }

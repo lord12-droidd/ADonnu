@@ -25,4 +25,11 @@ export class StudentService {
         let studentEmail = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1])).email;
         return this.httpClient.put(this.baseApiUrl + '/api/Students/' + studentEmail, formData);
     }
+
+    public createStudentRequest(formData) {
+      return this.httpClient.post(this.baseApiUrl + '/api/IndScheduleRequest', formData,{
+          reportProgress: true,
+          responseType: 'blob'
+        });
+  }
 }

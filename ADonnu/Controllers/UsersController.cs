@@ -72,7 +72,7 @@ namespace ADonnu.Controllers
         {
             var user = await _userService.GetUserByEmailAsync(request.Email);
             var roles = user.Roles;
-            return await CreateAuthToken(request, user => _mapper.Map<AuthenticationResponseModel>(_jwtService.CreateToken(user, roles[0]).Result));
+            return await CreateAuthToken(request, user => _mapper.Map<AuthenticationResponseModel>(_jwtService.CreateToken(user, roles).Result));
         }
 
 

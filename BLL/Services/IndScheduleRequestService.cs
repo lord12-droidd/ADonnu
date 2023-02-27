@@ -16,8 +16,8 @@ namespace BLL.Services
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        private static readonly string initPath = "C:/Users/USER/source/repos/BLL/FilesTemplates/IndRequestTemplate";
-        private static readonly string initPathSecond = "C:/Users/USER/source/repos/BLL/FilesTemplates/RegistryListTemplate";
+        private static readonly string initPath = "../BLL/FilesTemplates/IndRequestTemplate";
+        private static readonly string initPathSecond = "../BLL/FilesTemplates/RegistryListTemplate";
         private readonly string FONT = "c:/windows/fonts/Times.ttf";
         public IndScheduleRequestService(IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -28,12 +28,12 @@ namespace BLL.Services
         public async Task<string> CreateIndScheduleRequestFile(IndScheduleRequestDTO studentRequestInfo)
         {
             await Task.Run(() => {
-                File.WriteAllBytes("C:/Users/USER/source/repos/BLL/FilesTemplates/Signature.png", Convert.FromBase64String(studentRequestInfo.Signature));
+                File.WriteAllBytes("../BLL/FilesTemplates/Signature.png", Convert.FromBase64String(studentRequestInfo.Signature));
                 FillIndRequestTemplate(studentRequestInfo);
                 FillRegistryListTemplate(studentRequestInfo);
-                MergePDFs(new List<string>() { initPath + "Filled.pdf", initPathSecond + "Filled.pdf" }, "C:/Users/USER/source/repos/BLL/FilesTemplates/ResultRequest.pdf");
+                MergePDFs(new List<string>() { initPath + "Filled.pdf", initPathSecond + "Filled.pdf" }, "../BLL/FilesTemplates/ResultRequest.pdf");
             });
-            return "C:/Users/USER/source/repos/BLL/FilesTemplates/ResultRequest.pdf";
+            return "../BLL/FilesTemplates/ResultRequest.pdf";
         }
 
         public async Task<MemoryStream> GetFileFromStorage(string filePath)
@@ -105,7 +105,7 @@ namespace BLL.Services
 
                 cb.AddTemplate(page, 0, 0);
 
-                Image image = Image.GetInstance(@"C:\Users\USER\source\repos\BLL\FilesTemplates\Signature.png", true);
+                Image image = Image.GetInstance(@"..\BLL\FilesTemplates\Signature.png", true);
                 var scalePercent = (((document.PageSize.Width / image.Width) * 100) - 19.5f);
                 image.ScalePercent(scalePercent);
                 image.SetAbsolutePosition(240, 235);
@@ -180,7 +180,7 @@ namespace BLL.Services
                 PdfImportedPage page = writer.GetImportedPage(reader, 1);
                 cb.AddTemplate(page, 0, 0);
 
-                Image image = Image.GetInstance(@"C:\Users\USER\source\repos\BLL\FilesTemplates\Signature.png", true);
+                Image image = Image.GetInstance(@"..\BLL\FilesTemplates\Signature.png", true);
                 var scalePercent = (((document.PageSize.Width / image.Width) * 100) - 19.5f);
                 image.ScalePercent(scalePercent);
                 image.SetAbsolutePosition(445, 373);

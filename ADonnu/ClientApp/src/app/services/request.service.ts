@@ -15,10 +15,4 @@ export class RequestService {
         this.baseApiUrl = 'https://localhost:44379';
     }
 
-    public createStudentRequest(formData) {
-        return this.httpClient.post(this.baseApiUrl + '/api/IndScheduleRequest', formData,{
-            reportProgress: true,
-            responseType: 'blob'
-          });
-    }
 }

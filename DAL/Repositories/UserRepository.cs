@@ -31,8 +31,15 @@ namespace DAL.Repositories
 
         public async Task<UserEntity> GetUserByEmailAsync(string email)
         {
-            var res = await _userManager.FindByEmailAsync(email);
-            return res;
+            return await Entity.AsQueryable().AsNoTracking().FirstOrDefaultAsync(user => user.Email == email);
+        }
+
+        public async Task<IdentityResult> UpdateUserRolesAsync(string email, IList<string> roles)
+        {
+            var userEntity = await _userManager.FindByEmailAsync(email);
+            var userRoles = await _userManager.GetRolesAsync(userEntity);
+            await _userManager.RemoveFromRolesAsync(userEntity, userRoles);
+            return await _userManager.AddToRolesAsync(userEntity, roles);
         }
 
         public async Task<IList<string>> GetUserRolesByEmailAsync(string email)
@@ -53,6 +60,13 @@ namespace DAL.Repositories
             return Entity.AsQueryable()
                 .Include(user => user.TeacherProfile)
                 .Include(user => user.StudentProfile);
+        }
+
+        public async Task<IdentityResult> DeleteUserByEmail(string email)
+        {
+            var userToDelete = await _userManager.FindByEmailAsync(email);
+            var res = await _userManager.DeleteAsync(userToDelete);
+            return res;
         }
     }
 }

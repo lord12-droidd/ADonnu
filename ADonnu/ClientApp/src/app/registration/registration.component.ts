@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validator, Validators, ReactiveFormsModule } from "@angular/forms"
 import { Router } from '@angular/router';
-import { RegistrationService } from '../services/registration.service';
+import { UserService } from '../services/registration.service';
 import * as p5 from 'p5';
 import { ToastrService } from 'ngx-toastr';
 
@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RegistrationComponent implements OnInit {
   
-  constructor(public service: RegistrationService, private toastr: ToastrService) { }
+  constructor(public service: UserService, private toastr: ToastrService) { }
   
   ngOnInit() {
     this.service.formModel.reset();
