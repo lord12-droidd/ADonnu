@@ -21,12 +21,19 @@ export class StudentService {
         return this.httpClient.get<string[]>(this.baseApiUrl + '/api/Students/' + studentEmail);
     }
 
+    public getStudentSubjects(): Observable<string[]> {
+      let studentEmail = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1])).email;
+
+      return this.httpClient.get<string[]>(this.baseApiUrl + '/api/Subjects/Student/' + studentEmail);
+  }
+
     public updateStudent(formData) {
         let studentEmail = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1])).email;
         return this.httpClient.put(this.baseApiUrl + '/api/Students/' + studentEmail, formData);
     }
 
     public createStudentRequest(formData) {
+      console.log(formData);
       return this.httpClient.post(this.baseApiUrl + '/api/IndScheduleRequest', formData,{
           reportProgress: true,
           responseType: 'blob'

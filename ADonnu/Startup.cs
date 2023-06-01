@@ -64,10 +64,18 @@ namespace ADonnu
             services.AddScoped<ISubjectRepository, SubjectRepository>();
             services.AddTransient<ISubjectRepository, SubjectRepository>();
 
+            services.AddScoped<ITeacherRepository, TeacherRepository>();
+            services.AddTransient<ITeacherRepository, TeacherRepository>();
+
+            services.AddScoped<IIndScheduleRequestRepository, IndScheduleRequestRepository>();
+            services.AddTransient<IIndScheduleRequestRepository, IndScheduleRequestRepository>();
+
 
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<IIndScheduleRequestService, IndScheduleRequestService>();
             services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<ISubjectService, SubjectService>();
+            services.AddTransient<ITeacherService, TeacherService>();
 
             services.AddControllers();
 

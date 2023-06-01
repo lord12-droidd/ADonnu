@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -23,5 +24,14 @@ namespace BLL.DTO
         public string Speciality { get; set; }
         public string Adds { get; set; }
         public string Signature { get; set; }
+        public IList<TeacherSubjectDTO> SubjectsForm { get; set; }
+        public IList<string> Files { get; set; }
+    }
+
+    public class TeacherSubjectDTO
+    {
+        public string CombinedTeacherName { get; set; }
+        public string SubjectName { get; set; }
+        public string Email { get; set; }
     }
 }

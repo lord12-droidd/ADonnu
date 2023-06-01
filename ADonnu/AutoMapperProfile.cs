@@ -14,6 +14,8 @@ namespace ADonnu
             CreateMap<UpdateStudentUserModel, UpdateStudentUserDTO>().ReverseMap();
             CreateMap<StudentModel, StudentDTO>().ReverseMap();
             CreateMap<IndScheduleRequestModel, IndScheduleRequestDTO>().ReverseMap();
+            CreateMap<TeacherSubjectModel, TeacherSubjectDTO>().ReverseMap();
+            CreateMap<ApproveIndScheduleRequestModel, ApproveIndScheduleRequestDTO>().ReverseMap();
             CreateMap<UpdateStudentUserModel, UpdateStudentUserDTO>().ForMember(dest => dest.Roles, opt => opt.MapFrom(src => CollectRoles(src.AdminRole, src.TeacherRole, src.StudentRole)));
         }
 

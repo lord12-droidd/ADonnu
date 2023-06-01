@@ -12,6 +12,11 @@ namespace DAL.Entities
         [Key]
         public string Id { get; set; }
         public string Name { get; set; }
+        public string Surname { get; set; }
+        public string MiddleName { get; set; }
+        public string EducationDegree { get; set; }
         public virtual UserEntity UserEntity { get; set; }
+        public IList<TeacherSubjectEntity> TeacherSubjects { get; set; }
+        public IList<IndScheduleRequestTeacherEntity> TeacherIndScheduleRequests { get; set; }
     }
 }

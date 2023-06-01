@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,5 +25,15 @@ namespace ADonnu.Models
         public string Speciality { get; set; }
         public string Adds { get; set; }
         public string Signature { get; set; }
+        public IList<TeacherSubjectModel> SubjectsForm { get; set; }
+        public IList<string> Files { get; set; }
     }
+
+    public class TeacherSubjectModel
+    {
+        public string CombinedTeacherName { get; set; }
+        public string SubjectName { get; set; }
+        public string Email { get; set; }
+    }
+
 }

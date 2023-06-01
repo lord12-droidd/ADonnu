@@ -15,6 +15,8 @@ namespace DAL
         public IUserRepository UserRepository { get; }
         public IStudentRepository StudentRepository { get; }
         public ISubjectRepository SubjectRepository { get; }
+        public ITeacherRepository TeacherRepository { get; }
+        public IIndScheduleRequestRepository IndScheduleRequestRepository { get; }
 
         public UnitOfWork(AppDBContext context, UserManager<UserEntity> userManager)
         {
@@ -22,6 +24,9 @@ namespace DAL
             _context = context;
             UserRepository = new UserRepository(_context, _userManager);
             StudentRepository = new StudentRepository(_context);
+            SubjectRepository = new SubjectRepository(_context);
+            TeacherRepository = new TeacherRepository(_context);
+            IndScheduleRequestRepository = new IndScheduleRequestRepository(_context);
         }
     }
 }

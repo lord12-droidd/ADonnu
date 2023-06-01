@@ -21,6 +21,7 @@ namespace DAL.Entities
         public string FinancingForm { get; set; }
         public string EducationDegree { get; set; }
         public virtual UserEntity UserEntity { get; set; }
+        public virtual IndScheduleRequestEntity IndScheduleRequestData { get; set; }
         public IList<StudentSubjectEntity> StudentSubjects { get; set; }
     }
 }

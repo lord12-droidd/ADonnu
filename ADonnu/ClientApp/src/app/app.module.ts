@@ -19,6 +19,9 @@ import { RequestsComponent } from './requests/requests.component';
 import { AdminComponent } from './admin/admin.component';
 import { EditStudentComponent } from './editStudent/editStudent.component';
 import { DataService } from './services/data.service';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ApproveComponent } from './approve/approve.component';
+import { SecretaryComponent } from './secretary/secretary.component';
 
 @NgModule({
   declarations: [
@@ -32,10 +35,14 @@ import { DataService } from './services/data.service';
     AccountComponent,
     RequestsComponent,
     AdminComponent,
-    EditStudentComponent
+    EditStudentComponent,
+    ApproveComponent,
+    SecretaryComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    NgSelectModule, 
+    FormsModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
@@ -50,7 +57,9 @@ import { DataService } from './services/data.service';
       { path: 'account', component : AccountComponent, canActivate:[AuthGuard], data :{permittedRoles:['Student']}},
       { path: 'requests', component : RequestsComponent, canActivate:[AuthGuard], data :{permittedRoles:['Student']}},
       { path: 'admin', component : AdminComponent, canActivate:[AuthGuard], data :{permittedRoles:['Admin']}},
-      { path: 'edit/student', component : EditStudentComponent}
+      { path: 'edit/student', component : EditStudentComponent},
+      { path: 'approve', component: ApproveComponent, canActivate:[AuthGuard], data :{permittedRoles:['Teacher']}},
+      { path: 'requests/approved', component: SecretaryComponent, canActivate:[AuthGuard], data :{permittedRoles:['Secretary']}}
     ])
   ],
   providers: [DataService],

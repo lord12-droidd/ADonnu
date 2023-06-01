@@ -3,6 +3,7 @@ using AutoMapper;
 using BLL.DTO;
 using BLL.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Logging;
@@ -32,23 +33,26 @@ namespace ADonnu.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateIndSchedule([FromBody] IndScheduleRequestModel indScheduleRequestModel)
         {
-
             var indScheduleRequestDTO = _mapper.Map<IndScheduleRequestDTO>(indScheduleRequestModel);
             indScheduleRequestDTO.Signature = indScheduleRequestModel.Signature.Substring(indScheduleRequestModel.Signature.LastIndexOf(',') + 1);
-            var filePath = await _indScheduleRequestService.CreateIndScheduleRequestFile(indScheduleRequestDTO);
-            var fileToDownload = await _indScheduleRequestService.GetFileFromStorage(filePath);
-            return File(fileToDownload, GetContentType(filePath), "Сформовані заяви на інд. графік");
+            var resultFileByteArray = await _indScheduleRequestService.CreateIndScheduleRequestFile(indScheduleRequestDTO, indScheduleRequestModel.Email);
+            return File(resultFileByteArray, "application/octet-stream", "Сформовані заяви на інд. графік");
         }
 
-        private string GetContentType(string path)
+        // POST: api/IndScheduleRequest/{teacherEmail}/Approve/Student/{studentEmail}
+        [HttpPost("{teacherEmail}/Approve/Student/{studentEmail}")]
+        public async Task<ActionResult<object>> ApproveIndScheduleRequest(string teacherEmail, string studentEmail, [FromBody] ApproveIndScheduleRequestModel body)
         {
-            var provider = new FileExtensionContentTypeProvider();
-            string contentType;
-            if (!provider.TryGetContentType(path, out contentType))
-            {
-                contentType = "application/octet-stream";
-            }
-            return contentType;
+            var res = await _indScheduleRequestService.ApproveIndScheduleRequest(_mapper.Map<ApproveIndScheduleRequestDTO>(body), teacherEmail, studentEmail);
+            return Ok(new { IsDeleted = res });
+        }
+
+        // GET: api/IndScheduleRequest/Approved
+        [HttpGet("Approved")]
+        public async Task<ActionResult<IList<ApprovedIndScheduleRequestDTO>>> GetApprovedIndScheduleRequest()
+        {
+            var res = await _indScheduleRequestService.GetApprovedIndScheduleRequest();
+            return Ok(res);
         }
     }
 }

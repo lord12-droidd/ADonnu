@@ -19,6 +19,37 @@ namespace DAL.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+            modelBuilder.Entity("DAL.Entities.IndScheduleRequestEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AzureAccessPath")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IndScheduleRequests");
+                });
+
+            modelBuilder.Entity("DAL.Entities.IndScheduleRequestTeacherEntity", b =>
+                {
+                    b.Property<string>("IndScheduleRequestId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TeacherPosition")
+                        .HasColumnType("integer");
+
+                    b.HasKey("IndScheduleRequestId", "TeacherId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("IndScheduleRequestTeachers");
+                });
+
             modelBuilder.Entity("DAL.Entities.StudentEntity", b =>
                 {
                     b.Property<string>("Id")
@@ -89,12 +120,36 @@ namespace DAL.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
+                    b.Property<string>("EducationDegree")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MiddleName")
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Surname")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("DAL.Entities.TeacherSubjectEntity", b =>
+                {
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SubjectId")
+                        .HasColumnType("text");
+
+                    b.HasKey("TeacherId", "SubjectId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("TeacherSubjects");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -125,29 +180,29 @@ namespace DAL.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "57992d96-ea5a-4bd9-9456-031f7f9405d7",
-                            ConcurrencyStamp = "4768080f-f92a-4361-8c5c-f2a23bb15cae",
+                            Id = "810d7566-a47f-4289-bc3d-3fbb6d7bd3c8",
+                            ConcurrencyStamp = "73a0bc54-6855-4bfc-84d2-531e27395803",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         },
                         new
                         {
-                            Id = "0556c8a9-6f83-4186-a302-df065a70c2ff",
-                            ConcurrencyStamp = "7986c21e-449c-4c5a-9957-05bbd582ca7e",
+                            Id = "b22a30c6-18ce-431f-8b10-dcf4f11b4391",
+                            ConcurrencyStamp = "87dcfd25-0396-4ea7-8b82-d68736b12c3b",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "5b7058b3-762d-43cb-8c92-c00349f4941c",
-                            ConcurrencyStamp = "d92b3ce4-d2c7-4de5-b17b-5c508453ad54",
+                            Id = "16aaa94d-d83d-45f1-9bac-c0a265e99d66",
+                            ConcurrencyStamp = "5512a5e7-f8be-4b07-8dd8-aeab807a8f37",
                             Name = "Secretary",
                             NormalizedName = "SECRETARY"
                         },
                         new
                         {
-                            Id = "9498a785-05d6-4343-b57e-35e6101e1850",
-                            ConcurrencyStamp = "796071d7-f884-475c-af72-dcceb2d86aca",
+                            Id = "7ba8f3a2-2254-43c1-aa4f-9d953e479781",
+                            ConcurrencyStamp = "3a8d885b-37e6-42d9-a5d8-ecf5d0b443b7",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -334,6 +389,36 @@ namespace DAL.Migrations
                     b.HasDiscriminator().HasValue("UserEntity");
                 });
 
+            modelBuilder.Entity("DAL.Entities.IndScheduleRequestEntity", b =>
+                {
+                    b.HasOne("DAL.Entities.StudentEntity", "StudentEntity")
+                        .WithOne("IndScheduleRequestData")
+                        .HasForeignKey("DAL.Entities.IndScheduleRequestEntity", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("StudentEntity");
+                });
+
+            modelBuilder.Entity("DAL.Entities.IndScheduleRequestTeacherEntity", b =>
+                {
+                    b.HasOne("DAL.Entities.IndScheduleRequestEntity", "IndScheduleRequest")
+                        .WithMany("IndScheduleRequestTeachers")
+                        .HasForeignKey("IndScheduleRequestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.TeacherEntity", "Teacher")
+                        .WithMany("TeacherIndScheduleRequests")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("IndScheduleRequest");
+
+                    b.Navigation("Teacher");
+                });
+
             modelBuilder.Entity("DAL.Entities.StudentEntity", b =>
                 {
                     b.HasOne("DAL.Entities.UserEntity", "UserEntity")
@@ -373,6 +458,25 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("UserEntity");
+                });
+
+            modelBuilder.Entity("DAL.Entities.TeacherSubjectEntity", b =>
+                {
+                    b.HasOne("DAL.Entities.SubjectEntity", "Subject")
+                        .WithMany("TeacherSubjects")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DAL.Entities.TeacherEntity", "Teacher")
+                        .WithMany("TeacherSubjects")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subject");
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -426,14 +530,30 @@ namespace DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("DAL.Entities.IndScheduleRequestEntity", b =>
+                {
+                    b.Navigation("IndScheduleRequestTeachers");
+                });
+
             modelBuilder.Entity("DAL.Entities.StudentEntity", b =>
                 {
+                    b.Navigation("IndScheduleRequestData");
+
                     b.Navigation("StudentSubjects");
                 });
 
             modelBuilder.Entity("DAL.Entities.SubjectEntity", b =>
                 {
                     b.Navigation("StudentSubjects");
+
+                    b.Navigation("TeacherSubjects");
+                });
+
+            modelBuilder.Entity("DAL.Entities.TeacherEntity", b =>
+                {
+                    b.Navigation("TeacherIndScheduleRequests");
+
+                    b.Navigation("TeacherSubjects");
                 });
 
             modelBuilder.Entity("DAL.Entities.UserEntity", b =>

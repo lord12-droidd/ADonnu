@@ -78,12 +78,51 @@
             <div class="text-conteiner">
                 <h1>Вітаємо в кабінеті оформлення заяв</h1>
                 <div class="description">
-                    <p>Тут ви можете можете оформити заяву на надання вам індивідуального відвідування занять</p>
+                    <p>Тут ви можете оформити заяву на надання вам індивідуального відвідування занять</p>
                 </div>
             </div>
         </div>
         <div class="faculty_icon">
             <img src="assets/imgs/logofipt2020-1.png" width="555" height="555">
+        </div>
+        <table class='table table-striped' aria-labelledby="tableLabel">
+            <thead>
+                <tr>
+                    <th>Предмет</th>
+                    <th>Викладач</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let subject of subjectsData; let i = index; trackBy: trackByIndex">
+                    <tr>
+                        <td>
+                            {{subject.name}}
+                        </td>
+                        <td>
+                            <select class="form-control" name="{{subject.name}}">
+                                <option [ngValue]="teacher" *ngFor="let teacher of subject.teachers ">
+                                    {{teacher.surname}} {{teacher.name}} {{teacher.middleName}} ({{teacher.email}})
+                                </option> 
+                            </select>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
+        <label class="btn btn-dark" (click)="fileInput.value = null">
+            Завантажте додатки
+            <input
+              #fileInput
+              type="file"
+              style="display: none"
+              (change)="chooseFile(fileInput.files)"
+              multiple
+            />
+        </label>
+        <div *ngIf="selectedFiles && selectedFiles.length">
+            <div *ngFor="let item of selectedFiles" class="d-flex justify-content-between flex-wrap bg-light text-primary">
+                <div>{{ item.name }}</div>
+            </div>
         </div>
         <div class="sketch-container">
             <h1>Поставте підпис</h1>
@@ -91,7 +130,7 @@
                 <p>Цей підпис буде використано для заповнення документу у графі "Підпис"</p>
             </div>
             <div id="sketch-holder"></div>
-            <button type="submit" class="btn btn-lg btn-dark" (click)="clearCanvas()">Очистити підпис</button>
+            <button type="submit " class="btn btn-lg btn-dark " (click)="clearCanvas() ">Очистити підпис</button>
         </div>
     </div>
 </div>

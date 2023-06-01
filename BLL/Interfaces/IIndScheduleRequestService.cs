@@ -9,7 +9,8 @@ namespace BLL.Interfaces
 {
     public interface IIndScheduleRequestService
     {
-        public Task<string> CreateIndScheduleRequestFile(IndScheduleRequestDTO studentRequestInfo);
-        Task<MemoryStream> GetFileFromStorage(string filePath);
+        public Task<byte[]> CreateIndScheduleRequestFile(IndScheduleRequestDTO studentRequestInfo, string email);
+        Task<bool> ApproveIndScheduleRequest(ApproveIndScheduleRequestDTO approveIndScheduleRequestDTO, string teacherEmail, string studentEmail);
+        Task<IList<ApprovedIndScheduleRequestDTO>> GetApprovedIndScheduleRequest();
     }
 }

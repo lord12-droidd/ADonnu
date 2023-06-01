@@ -10,5 +10,7 @@ namespace DAL.Entities
         public string Id { get; set; }
         public string Name { get; set; }
         public IList<StudentSubjectEntity> StudentSubjects { get; set; }
+        public IList<TeacherSubjectEntity> TeacherSubjects { get; set; }
+
     }
 }

@@ -1,13 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { StudentService } from '../services/student.service';
 import * as p5 from 'p5';
+import { Observable, ReplaySubject } from 'rxjs';
+import { RequestService } from '../services/request.service';
 
 @Component({
   selector: 'app-requests',
   templateUrl: './requests.component.html',
-  styleUrls: ['./requests.component.css']
+  styleUrls: ['./requests.component.css'],
 })
 export class RequestsComponent implements OnInit {
     formModel = {
@@ -26,16 +28,25 @@ export class RequestsComponent implements OnInit {
         Reason: "",
         StartDate:"",
         EndDate: "",
-        Adds:""
+        Adds:"",
+        Files:[],
+        SubjectsForm : [{}]
     }
     userDetails;
     strokeColor: number;
     canvas: any;
+    selectedFiles: File[];
+    byteArraySelectedFiles : any;
+    subjectsData: any;
 
-    constructor(private studentService : StudentService, private toastr: ToastrService, private fb: FormBuilder,) { }
+    subjectSelection = { };
+    teachers = { };
+
+    constructor(private studentService : StudentService, private indRequestService : RequestService, private toastr: ToastrService, private fb: FormBuilder,) { }
 
     ngOnInit() {
       this.getUser();
+      this.getStudentSubject();
 
       const sketch = s => {
         s.setup = () => {
@@ -70,6 +81,14 @@ export class RequestsComponent implements OnInit {
       this.canvas = new p5(sketch);
     }
 
+    private fillTeachers(){
+      for (let i = 0; i < this.subjectsData.length; i++){
+        for (let j = 0; j < this.subjectsData[i].teachers.length; j++){
+          this.teachers[`${this.subjectsData[i].teachers[j].email}`] = this.subjectsData[i].teachers[j].name + this.subjectsData[i].teachers[j].surname + this.subjectsData[i].teachers[j].middleName 
+        }
+      }
+    }
+
     public outputStudentInfo(userDetails){
         this.formModel.Email = userDetails.email;
         this.formModel.Name = userDetails.name;
@@ -99,6 +118,18 @@ export class RequestsComponent implements OnInit {
         );
     }
 
+    public getStudentSubject(){
+      this.studentService.getStudentSubjects().subscribe(
+        res => {
+            this.subjectsData = res;
+            console.log(this.subjectsData);
+        },
+        err => {
+            console.log(err);
+        },
+        );
+    }
+
     public clearCanvas()
     {
       var canvas = document.getElementById('defaultCanvas0') as HTMLCanvasElement
@@ -106,31 +137,125 @@ export class RequestsComponent implements OnInit {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
+    public formSubjectsTable(){
+      var table = document.querySelector("table tbody")
+      var subjects = table.querySelectorAll('[name]') as any as Array<HTMLInputElement>;
+      for (let i = 0; i < subjects.length; i++) {
+        this.formModel.SubjectsForm[i] = {};
+        this.formModel.SubjectsForm[i]["SubjectName"] = subjects[i].getAttribute("name");
+        this.formModel.SubjectsForm[i]["Email"] = subjects[i].value.split("(")[1].slice(0, -1);
+        this.formModel.SubjectsForm[i]["CombinedTeacherName"] = subjects[i].value.split("(")[0];
+        console.log(subjects[i].value);
+      }
+      
+    }
+
     onSubmitCreateRequest(form: NgForm) {
         var canvas = document.getElementById('defaultCanvas0') as HTMLCanvasElement;
         var src = canvas.toDataURL("image/png");
         form.value.Signature = src
-        this.studentService.createStudentRequest(form.value).subscribe(
-          (res: any) => {
-            console.log(form.value);
-            console.log(res);
-            const fileName: string = 'Сформовані заяви на інд. графік.pdf';
-            const objectUrl: string = URL.createObjectURL(res);
-            const a: HTMLAnchorElement = document.createElement('a') as HTMLAnchorElement;
+
+
+        this.fillTeachers();
+        console.log(this.teachers);
+
+        this.formSubjectsTable();
+        form.value.SubjectsForm = this.formModel.SubjectsForm;
+        console.log(this.formModel.SubjectsForm);
+        console.log(form.value);
         
-            a.href = objectUrl;
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();        
-        
-            document.body.removeChild(a);
-            URL.revokeObjectURL(objectUrl);
-            this.toastr.success("Заява створена");
-          },
-          err => {
-            this.toastr.error("Виникла помилка при створенні заяви");
-          }
-        );
+
+        Promise.all(
+          this.selectedFiles.map(
+            (image) =>
+              new Promise((resolve, reject) => {
+                const fileReader = new FileReader();
+  
+                fileReader.onload = (file) => {
+                  resolve(fileReader.result);
+                };
+  
+                fileReader.onerror = (error) => reject(error);
+  
+                fileReader.readAsDataURL(image);
+              })
+          )
+        ).then((base64Files) => {
+          form.value.Files = base64Files;
+          this.studentService.createStudentRequest(form.value).subscribe(
+            (res: any) => {
+              console.log(form.value);
+              console.log(res);
+              const fileName: string = 'Сформовані заяви на інд. графік.pdf';
+              const objectUrl: string = URL.createObjectURL(res);
+              const a: HTMLAnchorElement = document.createElement('a') as HTMLAnchorElement;
+          
+              a.href = objectUrl;
+              a.download = fileName;
+              document.body.appendChild(a);
+              a.click();        
+          
+              document.body.removeChild(a);
+              URL.revokeObjectURL(objectUrl);
+  
+              this.toastr.success("Заява створена");
+            },
+            err => {
+              this.toastr.error("Виникла помилка при створенні заяви");
+            }
+          );
+        });
       }
 
-}
+    trackByIndex(index, item) {
+      return index;
+    }
+
+    filesAsStringArray() : string[] {
+      var resultArray : string[] = [];
+      for(let i = 0; i < this.selectedFiles.length; i++){
+        this.createBase64StringFile(this.selectedFiles[i]).subscribe((res: any) =>{
+          resultArray.push(res);
+        })
+      }
+      console.log(resultArray);
+      return resultArray;
+    }
+
+    filesAsByteArray(){
+      let reader = new FileReader();
+      reader.onload = function () {
+        let arrayBuffer = reader.result as ArrayBuffer;
+        let byteArray = new Uint8Array(arrayBuffer);
+        console.log(byteArray); // Your byte array
+      };
+      for (let i = 0; i < this.selectedFiles.length; i++) {
+        this.byteArraySelectedFiles.push(reader.readAsArrayBuffer(this.selectedFiles[i]));
+      }
+    }
+
+    addToFormData(form: FormData) : FormData{
+      for (let i = 0; i < this.selectedFiles.length; i++) {
+        form.append("cert", this.selectedFiles[i]);
+      }
+      return form;
+    }
+
+    createBase64StringFile(file : File)  : Observable<string>{
+        const result = new ReplaySubject<string>(1);
+        const reader = new FileReader();
+        reader.readAsBinaryString(file);
+        reader.onload = (event) => result.next(btoa(reader.result.toString()));
+        return result;
+    }
+
+    chooseFile(files: FileList) {
+      this.selectedFiles = [];
+      if (files.length === 0) {
+        return;
+      }
+      for (let i = 0; i < files.length; i++) {
+        this.selectedFiles.push(files[i]);
+      }
+    }
+  }

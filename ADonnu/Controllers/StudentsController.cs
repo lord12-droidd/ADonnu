@@ -37,6 +37,7 @@ namespace ADonnu.Controllers
             student.Email = email;
             return student;
         }
+
         // PATCH: api/Students/email
         [HttpPut("{email}")]
         public async Task<ActionResult<StudentModel>> UpdateStudent(string email, StudentModel studentModel)

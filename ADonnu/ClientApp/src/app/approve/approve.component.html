@@ -1,0 +1,35 @@
+<div class="pageWrapper">
+    <div class="studentsTable">
+        <h2>Студенти</h2>
+        <table class='table' aria-labelledby="tableLabel" *ngIf="students">
+            <thead class="thead-light">
+                <tr>
+                    <th>Ім'я</th>
+                    <th>Email</th>
+                    <th>Графік відпрацювання</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let student of students; let i = index">
+                    <td>{{student.studentName}}</td>
+                    <td>{{student.studentEmail}}</td>
+                    <td><input type="form-control" class="form-control" name="{{student.studentEmail}}>{{[i]}}" required></td>
+                    <td><button class="btn btn-outline-success" (click)="approveRequest(student.studentEmail, i)">Погодити</button></td>
+                    <td><button class="btn btn-outline-danger" (click)="editUser(user)">Відхилити</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="sketch-wrapper">
+        <div class="sketch-container">
+            <h1>Поставте підпис</h1>
+            <div class="description">
+                <p>Цей підпис буде використано для заповнення документу у графі "Підпис"</p>
+            </div>
+            <div id="sketch-holder"></div>
+            <button type="submit " class="btn btn-lg btn-dark " (click)="clearCanvas() ">Очистити підпис</button>
+        </div>
+    </div>
+</div>

@@ -7,51 +7,90 @@
       </button>
             <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]="{ show: isExpanded }">
                 <ul class="navbar-nav flex-grow">
-                  <ng-container *ngIf="this.currentUserRoles.length === 0; then guestNavigation"></ng-container>
-                  <ng-container *ngIf="this.currentUserRoles.length === 1 && this.currentUserRoles.includes('Student'); then studentNavigation"></ng-container>
-                  <ng-container *ngIf="this.currentUserRoles.length === 1 && this.currentUserRoles.includes('Admin') then adminNavigation"></ng-container>
-                  <ng-container *ngIf="this.currentUserRoles.length === 2 && this.currentUserRoles.includes('Student') && this.currentUserRoles.includes('Admin') then studentAdminNavigation"></ng-container>
-                  <ng-template #guestNavigation>
-                      <li class="nav-item" [routerLinkActive]="['link-active']">
-                          <a class="nav-link text-dark" [routerLink]="['/registration']">Реєстрація</a>
-                      </li>
-                      <li class="nav-item" [routerLinkActive]="['link-active']">
-                          <a class="nav-link text-dark" [routerLink]="['/login']">Вхід</a>
-                      </li>
-                  </ng-template>
-                  <ng-template #studentNavigation>
-                      <li class="nav-item" [routerLinkActive]="['link-active']">
-                          <a class="nav-link text-dark" [routerLink]="['/account']">Особистий кабінет</a>
-                      </li>
-                      <li class="nav-item" [routerLinkActive]="['link-active']">
-                          <a class="nav-link text-dark" [routerLink]="['/requests']">Заявки</a>
-                      </li>
-                      <li class="nav-item" [routerLinkActive]="['link-active']">
-                          <a class="nav-link text-dark" [routerLink]="['/logout']">Вихід</a>
-                      </li>
-                  </ng-template>
-                  <ng-template #adminNavigation>
-                    <li class="nav-item" [routerLinkActive]="['link-active']">
-                      <a class="nav-link text-dark" [routerLink]="['/admin']">Користувачі</a>
-                    </li>
-                    <li class="nav-item" [routerLinkActive]="['link-active']">
-                      <a class="nav-link text-dark" [routerLink]="['/logout']">Вихід</a>
-                    </li>
-                  </ng-template>
-                  <ng-template #studentAdminNavigation>
-                    <li class="nav-item" [routerLinkActive]="['link-active']">
-                      <a class="nav-link text-primary" [routerLink]="['/admin']">Користувачі</a>
-                    </li>
-                    <li class="nav-item" [routerLinkActive]="['link-active']">
-                        <a class="nav-link text-dark" [routerLink]="['/account']">Особистий кабінет</a>
-                    </li>
-                    <li class="nav-item" [routerLinkActive]="['link-active']">
-                        <a class="nav-link text-dark" [routerLink]="['/requests']">Заявки</a>
-                    </li>
-                    <li class="nav-item" [routerLinkActive]="['link-active']">
-                        <a class="nav-link text-dark" [routerLink]="['/logout']">Вихід</a>
-                    </li>
-                  </ng-template>
+                    <ng-container *ngIf="this.currentUserRoles.length === 0; then guestNavigation"></ng-container>
+                    <ng-container *ngIf="this.currentUserRoles.length === 1 && this.currentUserRoles.includes('Student'); then studentNavigation"></ng-container>
+                    <ng-container *ngIf="this.currentUserRoles.length === 1 && this.currentUserRoles.includes('Teacher'); then teacherNavigation"></ng-container>
+                    <ng-container *ngIf="this.currentUserRoles.length === 1 && this.currentUserRoles.includes('Secretary') then secretaryNavigation"></ng-container>
+                    <ng-container *ngIf="this.currentUserRoles.length === 1 && this.currentUserRoles.includes('Admin') then adminNavigation"></ng-container>
+                    <ng-container *ngIf="this.currentUserRoles.length === 2 && this.currentUserRoles.includes('Student') && this.currentUserRoles.includes('Admin') then studentAdminNavigation"></ng-container>
+                    <ng-container *ngIf="this.currentUserRoles.length === 2 && this.currentUserRoles.includes('Teacher') && this.currentUserRoles.includes('Admin') then teacherAdminNavigation"></ng-container>
+                    <ng-template #guestNavigation>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/registration']">Реєстрація</a>
+                        </li>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/login']">Вхід</a>
+                        </li>
+                    </ng-template>
+                    <ng-template #studentNavigation>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/account']">Особистий кабінет</a>
+                        </li>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/requests']">Заявки</a>
+                        </li>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/logout']">Вихід</a>
+                        </li>
+                    </ng-template>
+                    <ng-template #teacherNavigation>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/account']">Особистий кабінет</a>
+                        </li>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/approve']">Заявки</a>
+                        </li>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/logout']">Вихід</a>
+                        </li>
+                    </ng-template>
+                    <ng-template #secretaryNavigation>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/account']">Особистий кабінет</a>
+                        </li>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['requests/approved']">Заявки</a>
+                        </li>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/logout']">Вихід</a>
+                        </li>
+                    </ng-template>
+                    <ng-template #adminNavigation>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/admin']">Користувачі</a>
+                        </li>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/logout']">Вихід</a>
+                        </li>
+                    </ng-template>
+                    <ng-template #studentAdminNavigation>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-primary" [routerLink]="['/admin']">Користувачі</a>
+                        </li>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/account']">Особистий кабінет</a>
+                        </li>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/requests']">Заявки</a>
+                        </li>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/logout']">Вихід</a>
+                        </li>
+                    </ng-template>
+                    <ng-template #teacherAdminNavigation>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-primary" [routerLink]="['/admin']">Користувачі</a>
+                        </li>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/account']">Особистий кабінет</a>
+                        </li>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/requests']">Заявки</a>
+                        </li>
+                        <li class="nav-item" [routerLinkActive]="['link-active']">
+                            <a class="nav-link text-dark" [routerLink]="['/logout']">Вихід</a>
+                        </li>
+                    </ng-template>
                 </ul>
             </div>
         </div>

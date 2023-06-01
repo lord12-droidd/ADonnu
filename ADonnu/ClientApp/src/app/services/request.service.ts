@@ -15,4 +15,9 @@ export class RequestService {
         this.baseApiUrl = 'https://localhost:44379';
     }
 
+    public uploadIndRequestAdds(formData) {
+      console.log(formData);
+      let studentEmail = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1])).email;
+      return this.httpClient.post(this.baseApiUrl + '/api/IndScheduleRequest/Adds', formData);
+  }
 }

@@ -7,6 +7,10 @@ using BLL.Services;
 using AutoMapper;
 using BLL.Interfaces;
 using BLL.DTO;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Linq;
 
 namespace ADonnu.Controllers
 {

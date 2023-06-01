@@ -37,7 +37,7 @@ namespace ADonnu.Controllers
             return Ok(new { userEmail = email, isDeleted = result });
         }
 
-        // DELETE: api/Admins/Update/User
+        // PUT: api/Admins/Update/User
         [HttpPut("Update/User")]
         public async Task<ActionResult<object>> UpdateUser([FromQuery] string email, UpdateStudentUserModel updateStudentModel)
         {
